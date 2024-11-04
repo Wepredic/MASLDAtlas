@@ -1,0 +1,5 @@
+preprocessing/preprocessing/raw_files/*
+preprocessing/preprocessing/__pycache__/
+preprocessing/preprocessing/raw_files_bak/*
+preprocessing/preprocessing/raw_files_pos_bak/*
+*.h5ad
