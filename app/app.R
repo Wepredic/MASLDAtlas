@@ -417,22 +417,22 @@ server <- function(input, output,session) {
   
   # Import Dataset
   ##ui actions
-  
+  # Read the dataset mapping CSV
+  dataset_mapping <- read.csv("./dataset_mapping.csv", stringsAsFactors = FALSE)
   output$dataset_selection_list <- renderUI({
-    if(input$selection_organism == "Human") {
-      selectInput("selection_dataset", "Select Dataset",
-                  choices = list("Individual Dataset" = list("GSE136103", "GSE181483")))
-    } else if(input$selection_organism == "Mouse") {
-      selectInput("selection_dataset", "Select Dataset",
-                  choices = list("Datasets" = list("GSE145086")))
-    } else if(input$selection_organism == "Zebrafish") {
-      selectInput("selection_dataset", "Select Dataset",
-                  choices = "GSE181987")
-    } else if(input$selection_organism == "Integrated") {
-      selectInput("selection_dataset", "Select Dataset",
-                  choices = "Fibrotic Integrated Cross Species")
-    }
-  })
+  # Filter datasets based on the selected organism
+  filtered_datasets <- dataset_mapping %>%
+    filter(species == input$selection_organism) %>%
+    pull(dataset)
+  
+  # Check if there are any datasets for the selected species
+  if (length(filtered_datasets) > 0) {
+    selectInput("selection_dataset", "Select Dataset", choices = filtered_datasets)
+  } else {
+    selectInput("selection_dataset", "Select Dataset", choices = c("No datasets available"))
+  }
+})
+
   
   
   
